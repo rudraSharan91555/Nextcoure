@@ -1,6 +1,11 @@
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Navbar from "./NavBar";
+import { Suspense } from "react";
+import AuthProvider from "./auth/provider";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,11 +29,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-them='winter'>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>
+        <Navbar/>
+        <main className="p-5 ">
+          <Suspense fallback={<p className='loading loading-spinner '>Loading..</p>}>
+            {children}
+          </Suspense>
+        </main>
+        </AuthProvider>
+        
       </body>
     </html>
   );
